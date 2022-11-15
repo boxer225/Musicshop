@@ -1,0 +1,16 @@
+<div id="mi-slider" class="mi-slider">
+      {% for par in parents %}
+  <ul>
+      {% for chil in par.get_descendants %}
+    <li><a href="{{ chil.get_absolute_url }}">
+      <img src="{{ chil.image.url }}" alt="img01" style="width: 280px; height: 280px"><h4>{{ chil }}</h4>
+    </a></li>
+    {% endfor %}
+  </ul>
+  {% endfor %}
+  <nav>
+    {% for par in parents %}
+    <a href="#">{{ par.name }}</a>
+    {% endfor %}
+  </nav>
+</div>

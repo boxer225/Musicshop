@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h1 align="center"> Авторизация </h1>
+<div style="margin-top: 15%; margin-bottom: 25%; margin-left: 35%">
+  <form method="post">
+    {% csrf_token %}
+    {% for f in form %}
+    <div class="row">
+      <div class="col-md-6 col-sm-6">
+        <div class="form-group">
+          {{ f }}
+          <div class="form-error">{{ f.errors }}</div>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+    <button type="submit" class="btn btn-primary">Отправить</button>
+  </form>
+</div>
+
+{% endblock %}

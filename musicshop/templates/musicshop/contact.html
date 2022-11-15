@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1 align="center"> Напишите нам. Мы обязательно ответим в ближайшее время </h1>
+<div style="margin-top: 12%; margin-bottom: 18%; margin-left: 35%">
+  <form method="post">
+    {% csrf_token %}
+    {% for f in form %}
+    <div class="row">
+      <div class="col-md-6 col-sm-6">
+        <div class="form-group">
+          {{ f }}
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+    <button type="submit" class="btn btn-primary">Отправить</button>
+  </form>
+</div>
+
+{% endblock %}

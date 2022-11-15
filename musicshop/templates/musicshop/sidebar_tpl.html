@@ -1,0 +1,12 @@
+{% load mptt_tags %}
+{% load static %}
+
+{% for par in parents %}
+<ul class="list-group">
+  <li class="list-group-item active" aria-current="true">{{ par.name }}
+  {% for chil in par.get_descendants %}
+  <li class="list-group-item"><a href="{{ chil.get_absolute_url }}">{{ chil.name }} </a> </li>
+  {% endfor %}
+</ul>
+{% endfor %}
+

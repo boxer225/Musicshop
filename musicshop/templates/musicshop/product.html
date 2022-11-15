@@ -1,0 +1,221 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %} {{ product.name }} {% endblock %}
+
+{% block content %}
+<head xmlns="http://www.w3.org/1999/html">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+
+  <!-- Google font -->
+  <link href="https://fonts.googleapis.com/css?family=Montserrat:400,500,700" rel="stylesheet">
+
+  <!-- Bootstrap -->
+  <link type="text/css" rel="stylesheet" href="{% static 'single/css/bootstrap.min.css' %}">
+
+  <!-- Slick -->
+  <link type="text/css" rel="stylesheet" href="{% static 'single/css/slick.css' %}">
+  <link type="text/css" rel="stylesheet" href="{% static 'single/css/slick-theme.css' %}">
+
+  <!-- nouislider -->
+  <link type="text/css" rel="stylesheet" href="{% static 'single/css/nouislider.min.css' %}">
+
+  <!-- Font Awesome Icon -->
+  <link rel="stylesheet" href="{% static 'single/css/font-awesome.min.css' %}">
+
+  <!-- Custom stlylesheet -->
+  <link type="text/css" rel="stylesheet" href="{% static 'single/css/style.css' %}">
+
+  <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+  <!--[if lt IE 9]>
+  <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+  <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+  <![endif]-->
+
+</head>
+
+<div class="section">
+  <!-- container -->
+  <div class="container">
+    <!-- row -->
+    <div class="row">
+      <!-- Product main img -->
+             <div>
+                <ol class="breadcrumb">
+                    <li><a href="{% url 'home' %}">Каталог</a></li>
+                    <li class="active"><a href="{{ category.get_absolute_url }}">{{ category.name }}</a></li>
+                  <li class="active"><a href="{{ product.get_absolute_url }}">{{ product.name }}</a></li>
+                </ol>
+            </div>
+      <div class="col-md-5 col-md-push-0">
+        <div id="product-main-img" class="slick-initialized slick-slider">
+          <div class="slick-list draggable"><div class="slick-track" style="opacity: 1; width: 1832px;"><div class="product-preview slick-slide slick-current slick-active" data-slick-index="0" aria-hidden="false" tabindex="0" style="width: 458px; position: relative; left: 0px; top: 0px; z-index: 999; opacity: 1; overflow: hidden;">
+            <img src="{{ product.image.url }}" alt="" style="height: 500px; width: 250px;">
+          </div></div></div>
+        </div>
+      </div>
+      <!-- /Product main img -->
+
+      <!-- Product thumb imgs -->
+      <!-- /Product thumb imgs -->
+
+      <!-- Product details -->
+      <div class="col-md-5" style="margin-top: 12%; margin-left: 12%;">
+        <div class="product-details">
+          <h2 class="product-name"> {{ product.name }} </h2>
+          <div>
+            <a class="review-link" href="#"> {{ count }} отзывов </a>
+          </div>
+          <div>
+            <h3 class="product-price"> {{ product.price }} рублей </h3>
+          </div>
+          <form action="{% url 'cart:cart_add' product.id %}" method="post" id="toCart">
+            {% csrf_token %}
+            <div class="qty-label">
+            {{ cart_product_form.as_p }}
+            </div>
+          <div class="add-to-cart">
+            <button class="add-to-cart-btn" type="submit" name="buy" value="toCart"><i class="fa fa-shopping-cart"></i> Добавить в корзину </button>
+          </div>
+          </form>
+        </div>
+      </div>
+      <!-- /Product details -->
+
+      <!-- Product tab -->
+      <div class="col-md-12">
+        <div id="product-tab">
+          <!-- product tab nav -->
+          <ul class="tab-nav">
+            <li class="active"><a data-toggle="tab" href="#tab1">Описание</a></li>
+            <li><a data-toggle="tab" href="#tab2">Наличие</a></li>
+            <li><a data-toggle="tab" href="#tab3">Отзывы ({{ count }})</a></li>
+          </ul>
+          <!-- /product tab nav -->
+
+          <!-- product tab content -->
+          <div class="tab-content">
+            <!-- tab1  -->
+            <div id="tab1" class="tab-pane fade in active">
+              <div class="row">
+                <div class="col-md-12">
+                  <p> {{ product.description }} </p>
+                </div>
+              </div>
+            </div>
+            <!-- /tab1  -->
+
+            <!-- tab2  -->
+            <div id="tab2" class="tab-pane fade in">
+              <div class="row">
+                <div class="col-md-12">
+                  <p> Количество товара: {{ product.count }} штук </p>
+                  </br>
+                  {% for city in product.city.all %}
+                  <p> {{ city.city }}: {{ city.address }} </p>
+                  </br>
+                  {% endfor %}
+                </div>
+              </div>
+            </div>
+            <!-- /tab2  -->
+
+
+            <div id="tab3" class="tab-pane fade in">
+              <div class="row">
+                <!-- Reviews -->
+                <div class="col-md-9">
+                  <div id="reviews">
+                    <ul class="reviews">
+                      {% for comment in product.comment.all %}
+                      <li>
+                        <div class="review-heading">
+                          <h5 class="name">{{ user.username }}</h5>
+                          {% if comment.mark == 1 %}
+                          <div class="review-rating">
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star-o empty"></i>
+                            <i class="fa fa-star-o empty"></i>
+                            <i class="fa fa-star-o empty"></i>
+                            <i class="fa fa-star-o empty"></i>
+                          </div>
+                          {% elif comment.mark == 2 %}
+                          <div class="review-rating">
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star-o empty"></i>
+                            <i class="fa fa-star-o empty"></i>
+                            <i class="fa fa-star-o empty"></i>
+                          </div>
+                          {% elif comment.mark == 3 %}
+                          <div class="review-rating">
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star-o empty"></i>
+                            <i class="fa fa-star-o empty"></i>
+                          </div>
+                          {% elif comment.mark == 4 %}
+                          <div class="review-rating">
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star-o empty"></i>
+                          </div>
+                          {% elif comment.mark == 5 %}
+                          <div class="review-rating">
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                          </div>
+                          {% endif %}
+                        </div>
+                        <div class="review-body">
+                          <p>{{ comment.comment }}</p>
+                        </div>
+                      </li>
+                      {% endfor %}
+                    </ul>
+                  </div>
+                </div>
+
+                {% if user.is_authenticated %}
+                <div class="col-md-3">
+                  <div id="review-form">
+                    <form class="review-form" method="post">
+                      {% csrf_token %}
+                      {{ CommentForm.comment }}
+                      <div class="input-rating">
+                        <span>Ваша оценка: </span>
+                        {{ CommentForm.mark }}
+                      </div>
+                      <button class="primary-btn" type="submit">Отправить</button>
+                    </form>
+                  </div>
+                  {% else %}
+                  <p> Чтобы оставлять комментарий, нужно <a href="{% url 'login' %}">Авторизоваться</a> или <a href="{% url 'register' %}">Зарегистрирроваться</a> </p>
+                </div>
+                {% endif %}
+                <!-- /Review Form -->
+              </div>
+            </div>
+            <!-- /tab3  -->
+          </div>
+          <!-- /product tab content  -->
+        </div>
+      </div>
+      <!-- /product tab -->
+    </div>
+    <!-- /row -->
+  </div>
+  <!-- /container -->
+</div>
+
+{% endblock %}
